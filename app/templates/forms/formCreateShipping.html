@@ -1,0 +1,109 @@
+{% extends "dashboard/index.html" %}
+
+{% load static %}
+{% block head %}
+    <title>Freedash Template - The Ultimate Multipurpose admin template</title>
+    
+    <!-- Agregar el estilo de Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header px-4 py-3">
+                        <h5 class="mb-0">Add New Shipping</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="formShipping" class="row g-3 needs-validation"  data-redirect-url="{% url 'tableShipping' %}" method="POST">
+                            <div id="numbers-container">
+                                <div class="numbers-item row g-3">
+                                    <div class="col-md-4">
+                                        <label for="load" class="form-label">Load</label>
+                                        <input type="number" step="0.01" class="form-control" id="load" name="load[]" required >
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="type" class="form-label">Type</label>
+                                        <select name="type[]" class="form-control" id="exampleFormControlSelect1" required >
+                                            <option disabled selected ></option>
+                                            <option value="KILOGRAMS" >KILOGRAMS</option>
+                                            <option value="POUNDS" >POUNDS</option>
+                                            <option value="LITERS" >LITERS</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="price" class="form-label">Price</label>
+                                        <input type="number" step="0.01" class="form-control" id="price" name="price[]" required >
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" name="description[]" id="description" style="resize: none" cols="20" rows="2" required ></textarea>
+                                    </div>
+                                    <div class="col-md-12 text-end">
+                                        <button type="button" class="btn btn-danger remove-numbers">Remove</button>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>   
+                            <hr>
+                            <div id="numbers-container">
+                                <div class="numbers-item row g-3"> 
+                                    <div class="col-md-8">
+                                        <label for="observationShipping" class="form-label">Description the Shipping</label>
+                                        <textarea class="form-control" name="observationShipping" id="observationShipping" style="resize: none" cols="20" rows="5" required ></textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="country" class="form-label">Country</label>
+                                        <select name="country" class="form-control" id="exampleFormControlSelect1" required >
+                                            <option disabled selected ></option>
+                                            {% for  item in country %}
+                                                <option value="{{item.country}}" >{{item.country}}</option>                      
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>                                
+                            </div>            
+                            <div class="col-md-12">
+                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                    <button type="button" id="addNumbers" class="btn btn-success px-4">ADD</button>
+                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <a href="{% url 'tableNewShipment' %}" class="btn btn-light px-4">Back</a>	
+                                </div>
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>       
+ 
+
+{% endblock %}
+{% block end_js %}
+
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src={% static "assets/libs/popper.js/dist/umd/popper.min.js" %}></script>
+    <!-- apps -->
+    <script src={% static "assets/js/app-style-switcher.js" %}></script>
+    <script src={% static "assets/js/feather.min.js" %}></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src={% static "assets/extra-libs/sparkline/sparkline.js" %}></script>
+
+	<!-- Agregar la librería de Flatpickr -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="{% static "assets/js/validations/addProduct.js" %}"></script>
+    <script src="{% static "assets/js/validations/downloadInvoice.js" %}"></script>
+    <!-- En tu head o antes del cierre del body -->
+
+
+
+{% endblock %}
+

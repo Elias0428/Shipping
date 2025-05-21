@@ -1,0 +1,66 @@
+{% extends "dashboard/index.html" %}
+
+{% load static %}
+{% block head %}
+    <title>Create Shipping</title>
+    <!-- This page plugin CSS -->
+    <link rel="stylesheet" href="{% static 'assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/extra-libs/datatables.net-bs4/css/responsive.dataTables.min.css' %}">
+{% endblock %}
+{% block page_content %}
+
+
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <!-- basic table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Existing clients</h4>
+                        <div class="table-responsive">
+                            <table id="zero_config" class="table border table-striped table-bordered text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Creation agent</th>
+                                        <th>Name Client</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in clients %}
+                                    <tr>
+                                        <td>{{item.agent.first_name}} {{item.agent.last_name}}</td>
+                                        <td>{{item.first_name}} {{item.last_name}}</td>
+                                        <td>{{item.phone_number}}</td>
+                                        <td>{{item.address}}</td> 			
+                                        <td> <a href="{% url 'formCreateShipping' item.id %}" type="button" class="btn btn-outline-primary" > New Shipping </a> </td> 
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>                                       
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block end_js %}  
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src={% static "assets/libs/popper.js/dist/umd/popper.min.js" %}></script>
+
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src={% static "assets/extra-libs/sparkline/sparkline.js" %}></script>
+
+    <!--This page plugins -->
+    <script src={% static "assets/extra-libs/datatables.net/js/jquery.dataTables.min.js" %}></script>
+    <script src={% static "assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js" %}></script>
+    <script src={% static "assets/js/pages/datatable/datatable-basic.init.js" %}></script>
+{% endblock %}

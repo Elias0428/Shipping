@@ -1,0 +1,148 @@
+{% extends "dashboard/index.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+{% block head %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href={% static "assets/images/favicon.png" %}>
+    <title>Freedash Template - The Ultimate Multipurpose admin template</title>
+    <!-- Custom CSS -->
+    <link href={% static "assets/css/style.min.css" %} rel="stylesheet">
+    
+    <!-- Agregar el estilo de Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header px-4 py-3">
+                        <h5 class="mb-0">Add New Shipping</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="formCreateCompanies" class="row g-3 needs-validation" method="POST">
+                            <div id="numbers-container">
+                                <div class="numbers-item row g-3">
+                                    <div class="col-md-4">
+                                        <label for="name" class="form-label">Full name</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{client.client.first_name}} {{client.client.last_name}}" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="phone" class="form-label">Phone</label>
+                                        <input type="number" class="form-control" id="phone" name="phone" value="{{client.client.phone_number}}" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" name="address" value="{{client.client.address}}" readonly>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div id="numbers-container">
+                                {% if packages %}
+                                    <hr>                                    
+                                    <h3>Products: </h3>
+                                    <br>
+                                {% endif %}
+                                {% for item in packages %}
+                                    <div class="numbers-item row g-3">
+                                        <div class="col-md-4">
+                                            <label for="load" class="form-label">Load</label>
+                                            <input hidden class="form-control" id="load" name="id[]" value="{{item.id}}"  >
+                                            <input type="number" step="0.01" class="form-control" id="load" name="load[]" value="{{item.load}}" required >
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="type" class="form-label">Type </label>
+                                            <select name="type[]" class="form-control" id="exampleFormControlSelect1" required >
+                                                <option disabled selected ></option>
+                                                <option value="KILOGRAMS" {% if item.type == 'KILOGRAMS' %} selected {% endif %} >KILOGRAMS</option>
+                                                <option value="POUNDS" {% if item.type == 'POUNDS' %} selected {% endif %} >POUNDS</option>
+                                                <option value="LITERS" {% if item.type == 'LITERS' %} selected {% endif %} >LITERS</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="price" class="form-label">Price</label>
+                                            <input type="number" step="0.01" class="form-control" id="price" name="price[]" value="{{item.price}}" required >
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea class="form-control" name="description[]" id="description" style="resize: none" cols="20" rows="2" required >{{item.description}}</textarea>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {% endfor %}
+                            </div>    
+                            <div id="numbers-container">
+                                <div class="numbers-item row g-3">
+                                    <div class="col-md-3">
+                                        <label for="statusShipping" class="form-label">Status</label>
+                                        <select class="form-control" class="form-control" name="statusShipping" id="exampleFormControlSelect1" required  >
+                                            <option disabled selected></option>
+                                            {% for  list_drow in status %}
+                                                <option value="{{list_drow.statusShipping}}" {% if client.status == list_drow.statusShipping %}selected{% endif %} >{{list_drow.statusShipping}}</option>                      
+                                            {% endfor %}		
+                                        </select>
+                                    </div>        
+                                    <div class="col-md-2">
+                                        <label for="country" class="form-label">Country</label>
+                                        <select class="form-control" class="form-control" name="country" id="exampleFormControlSelect1" required  >
+                                            <option disabled selected></option>
+                                            {% for  item in country %}
+                                                <option value="{{item.country}}" {% if client.country == item.country %}selected{% endif %} >{{item.country}}</option>                      
+                                            {% endfor %}		
+                                        </select>
+                                    </div>                             
+                                    <div class="col-md-7">
+                                        <label for="observation" class="form-label">Observation</label>
+                                        <textarea class="form-control" name="observation" id="observation" style="resize: none" cols="20" rows="2" > {{client.description}}</textarea>
+                                    </div>     
+                                </div>
+                            </div>      
+                            <div class="col-md-12">
+                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <a href="{% url 'tableShipping' %}" class="btn btn-light px-4">Back</a>	
+                                </div>
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>       
+ 
+
+{% endblock %}
+{% block end_js %}
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src={% static "assets/libs/popper.js/dist/umd/popper.min.js" %}></script>
+    <script src={% static "assets/libs/bootstrap/dist/js/bootstrap.min.js" %}></script>
+
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src={% static "assets/extra-libs/sparkline/sparkline.js" %}></script>
+
+	<!-- Agregar la librería de Flatpickr -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="{% static "assets/js/validations/addProduct.js" %}"></script>
+
+  
+
+{% endblock %}
+
+</html>

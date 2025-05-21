@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - American Envios</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        @page {
+            size: letter;
+            margin: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            font-size: 10pt;
+        }
+        .invoice-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .invoice-header {
+            background: linear-gradient(135deg, #4e95d4, #2a6eaa);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .header-circle {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            top: -75px;
+            right: -50px;
+        }
+        .invoice-title {
+            font-weight: bold;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        .company-tagline {
+            font-style: italic;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        .table th {
+            background-color: #4e95d4;
+            color: white;
+            font-size: 10pt;
+            padding: 6px 10px;
+        }
+        .table td {
+            padding: 6px 10px;
+            font-size: 10pt;
+        }
+        .table {
+            margin-bottom: 10px;
+        }
+        .terms {
+            font-size: 8pt;
+            color: #666;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 8pt;
+            color: #666;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+        }
+        .text-primary-custom {
+            color: #4e95d4;
+        }
+        .bg-custom-light {
+            background-color: #eef6ff;
+        }
+        .client-info {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 9pt;
+        }
+        .client-info p {
+            margin-bottom: 3px;
+        }
+        .invoice-body {
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 15px;
+            background-color: white;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .terms h5, .client-info h5 {
+            margin-bottom: 5px;
+            font-size: 10pt;
+        }
+        .terms ol {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .terms li {
+            margin-bottom: 2px;
+        }
+        .invoice-number-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 8px 0;
+        }
+        .stripe-design {
+            height: 8px;
+            background: repeating-linear-gradient(
+                45deg,
+                #4e95d4,
+                #4e95d4 10px,
+                #6aa7db 10px,
+                #6aa7db 20px
+            );
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Header with decorative element -->
+        <div class="invoice-header">
+            <div class="header-circle"></div>
+            <div class="row">
+                <div class="col-7">
+                    <h1 class="invoice-title">AMÉRICA ENVÍOS</h1>
+                    <h6>LATIN MULTISERVICES</h6>
+                    <p class="company-tagline mb-0">The Art of Execution</p>
+                    <p class="mb-0" style="font-size: 0.8rem;">14331 SW 120th St Suite, Miami, FL 33186</p>
+                    <p class="mb-0" style="font-size: 0.8rem;">Phone: +1 (866) 636-8467 • americaenviosm@gmail.com</p>
+                </div>
+                <div class="col-5 text-end">
+                    <h2 class="invoice-title" style="font-size: 1.4rem;">INVOICE</h2>
+                    <div class="invoice-number-box">
+                        <strong>Nº: LA-{% now "Y" %}-{{id_invoice}}</strong>
+                    </div>
+                    <p class="mb-0" style="font-size: 0.8rem;"><strong>DATE:</strong> {{shippingInstance.created_at}} </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stripe-design"></div>
+        
+        <!-- Invoice Body -->
+        <div class="invoice-body">
+            <!-- Client Info Section -->
+            <div class="info-row">
+                <div class="client-info" style="width: 100%;">
+                    <h5 class="text-primary-custom"><i class="bi bi-person"></i> CLIENT:</h5>
+                    <p><strong id="clientName">{{client.first_name}} {{client.last_name}}</strong></p>
+                    <p id="clientAddress">{{client.email}}</p>
+                    <p id="clientCity">{{client.zipcode}} - {{client.state}} - {{client.county}} - {{client.city}}</p>
+                    <p id="clientPhone">+ {{client.phone_number}}</p>
+                </div>
+            </div>
+
+            <!-- Services Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th width="60%">Description</th>
+                            <th class="text-center" width="10%">Load</th>
+                            <th class="text-center" width="10%">Type</th>
+                            <th class="text-end" width="10%">Price</th>
+                            <th class="text-end" width="10%">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item, total in combined %}
+                            <tr>
+                                <td>{{item.description}}</td>
+                                <td class="text-center">{{item.load}}</td>
+                                <td class="text-center">{{item.type}}</td>
+                                <td class="text-end">USD $ {{item.price|floatformat:2}}</td>
+                                <td class="text-end">USD $ {{ total|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-end"><strong>Subtotal</strong></td>
+                            <td class="text-end">USD $ {{amount|floatformat:2}}</td>
+                        </tr>
+                        <tr class="bg-custom-light">
+                            <td colspan="4" class="text-end"><strong>TOTAL</strong></td>
+                            <td class="text-end"><strong>USD ${{amount|floatformat:2}}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <br><br><br><br>
+
+            <!-- Terms and Conditions -->
+            <div class="terms">
+                <h5 class="text-primary-custom">Terms and Conditions:</h5>
+                <ol>
+                    <li>América envíos LM reserves the right to suspend services if payment is not received by the due date..</li>
+                </ol>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>¡Thank you for trusting América envíos LM for your marketing needs.!</p>
+                <p>This invoice was generated electronically and is valid without signature or stamp..</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
