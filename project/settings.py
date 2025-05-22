@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gxtzgatt79x0le7rdp^3z!084&-$_%i3yt!994(hc**07(cjx8'
+SECRET_KEY = os.getenv('SECRET_KEY_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -142,23 +142,4 @@ else:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_AUTO_CREATE_BUCKET = True
-AWS_S3_FILE_OVERWRITE = False
 
-#AWS_S3
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
-
-# Configuraciones de email
-SMTP_HOST = os.getenv('SMTP_HOST')  # Ejemplo: mail.lapeira.com
-SMTP_PORT = os.getenv('SMTP_PORT', '587')
-SENDER_EMAIL_ADDRESS = os.getenv('SENDER_EMAIL_ADDRESS')  # no-reply@lapeira.com
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
-
-#Stripe
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
-DOMAIN = os.getenv('DOMAIN')
-STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')

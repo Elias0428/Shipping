@@ -23,8 +23,14 @@ def tableNewShipment(request):
 def tableShipping(request):
 
     shipping = Shipping.objects.order_by('id')
+    status = DropDownList.objects.filter(statusShipping__isnull=False)
 
-    return render(request, 'tables/tableShipping.html', { 'shipping': shipping})
+    context = {
+        'shipping': shipping,
+        'status' : status
+    }
+
+    return render(request, 'tables/tableShipping.html', context)
 
 
 

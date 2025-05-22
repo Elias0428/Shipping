@@ -188,31 +188,25 @@
                 <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
-                            <th width="60%">Description</th>
-                            <th class="text-center" width="10%">Load</th>
-                            <th class="text-center" width="10%">Type</th>
-                            <th class="text-end" width="10%">Price</th>
-                            <th class="text-end" width="10%">Total</th>
+                            <th width="70%">Description</th>
+                            <th class="text-end" width="30%">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item, total in combined %}
                             <tr>
                                 <td>{{item.description}}</td>
-                                <td class="text-center">{{item.load}}</td>
-                                <td class="text-center">{{item.type}}</td>
-                                <td class="text-end">USD $ {{item.price|floatformat:2}}</td>
                                 <td class="text-end">USD $ {{ total|floatformat:2 }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" class="text-end"><strong>Subtotal</strong></td>
+                            <td colspan="1" class="text-end"><strong>Subtotal</strong></td>
                             <td class="text-end">USD $ {{amount|floatformat:2}}</td>
                         </tr>
                         <tr class="bg-custom-light">
-                            <td colspan="4" class="text-end"><strong>TOTAL</strong></td>
+                            <td colspan="1" class="text-end"><strong>TOTAL</strong></td>
                             <td class="text-end"><strong>USD ${{amount|floatformat:2}}</strong></td>
                         </tr>
                     </tfoot>

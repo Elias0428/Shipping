@@ -110,11 +110,5 @@ def formCreateShipping(request, client_id):
     
     return render(request, 'forms/formCreateShipping.html', context)
 
-# Nueva función para solo generar el PDF (sin cambios)
-def descargarPdf(request, shipping_id):
-    shippingInstance = get_object_or_404(Shipping, id=shipping_id)
-    client = shippingInstance.client
-    packagesInstance = Packages.objects.filter(shipping=shippingInstance)
-    
-    return generatePdfInvoice(request, client, shippingInstance, packagesInstance)
+
 

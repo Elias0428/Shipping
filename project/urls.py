@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import index, auth, forms, fecth, tables, edit, sms
+from app.views import index, auth, forms, fecth, tables, edit, sms, download
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,7 +31,6 @@ urlpatterns = [
     #<---------------------------Forms--------------------------->
     path('formCreateClient/', forms.formCreateClient, name='formCreateClient'),
     path('formCreateShipping/<client_id>/', forms.formCreateShipping, name='formCreateShipping'),
-    path('descargarPdf/<int:shipping_id>/', forms.descargarPdf, name='descargarPdf'),
 
     #<---------------------------Fecth--------------------------->
     path('validatePhone/', fecth.validatePhone, name='validatePhone'),
@@ -46,5 +45,9 @@ urlpatterns = [
 
     #<---------------------------SMS--------------------------->
     path('sendMessage/<toPhone>/<messageContent>/', sms.sendMessage, name='sendMessage'),
-    
+
+    #<---------------------------download--------------------------->
+    path('shipping/export-excel/', download.exportShippingExcel, name='exportShippingExcel'),
+    path('descargarPdf/<int:shipping_id>/', download.descargarPdf, name='descargarPdf'),
+
 ]

@@ -13,6 +13,41 @@
 
 
     <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Filter</h4>
+                        <form method="POST" class="row" action="{% url "exportShippingExcel" %}">
+                            {% csrf_token %}
+                            <div class="col-md-3">
+                                <label for="start_date">Start date:</label>
+                                <input type="date" name="start_date" id="start_date" class="form-control" value="{{ start_date|date:'Y-m-d'|default:'' }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="end_date">End date:</label>
+                                <input type="date" name="end_date" id="end_date" class="form-control" value="{{ end_date|date:'Y-m-d'|default:'' }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="status">Status:</label>
+                                <select class="form-select" name="status" id="status" >
+                                    <option value="" disabled selected>Select Please</option>
+                                    {% for item in status %}
+                                        <option value="{{ item.id }}" >{{ item.statusShipping }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4 align-self-end mt-2">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{% url 'tableShipping' %}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -62,4 +97,11 @@
     <script src={% static "assets/extra-libs/datatables.net/js/jquery.dataTables.min.js" %}></script>
     <script src={% static "assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js" %}></script>
     <script src={% static "assets/js/pages/datatable/datatable-basic.init.js" %}></script>
+
+    <!-- Buttons for DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 {% endblock %}
