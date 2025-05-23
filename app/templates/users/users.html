@@ -1,0 +1,135 @@
+{% extends "dashboard/index.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+{% block head %}
+    <title>Create Users</title>
+    
+    <!-- Agregar el estilo de Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Client Input</h4>
+                        <form class="row g-3 needs-validation" method="POST" >
+                            <div class="col-md-4">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name"required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name"required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username"required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="role" class="form-label">Role</label>						
+                                <select id="inputState" class="form-select" id="role" name="role" required >	
+                                    {% for value, label in roles %}
+                                    <option value="{{ value }}" {% if user.role == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}					
+                                    <option disabled selected value="">Please select</option>								
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                </div>
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Users Input</h4>
+                        <table id="tableUser" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name User</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Active</th>
+                                    <th>Option</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td>{{user.first_name}} {{user.last_name}}</td>
+                                    <td>{{user.username}}</td>
+                                    <td>{{user.role}}</td>
+                                    <td>
+                                        {% if user.is_active %} Active
+                                        {% else %} Desactive
+                                        {% endif %}
+                                        </td>						
+                                    <td>
+                                        <a href="{% url 'editUser' user.id %}"  type="button" class="btn btn-outline-primary">Edit</a>
+                                        {% if request.user.is_superuser or request.user.role == 'Admin' %}
+                                        <a href="{% url 'toggleUser' user.id %}"  type="button" class="btn btn-outline-primary">Delete</a>
+                                        {% endif %}
+                                    
+                                    </td> 
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>       
+ 
+
+{% endblock %}
+{% block end_js %}
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src={% static "assets/libs/popper.js/dist/umd/popper.min.js" %}></script>
+
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src={% static "assets/extra-libs/sparkline/sparkline.js" %}></script>
+
+    {% if type == 'error' %}
+	<script>
+		Swal.fire({
+			icon: "error",
+			title: "Oops...",
+			text: "{{msg|safe}}",
+		});
+	</script>
+	{% elif type == 'good' %}
+	<script>
+		Swal.fire({
+			title: "Good job!",
+			text: "User successfully saved!",
+			icon: "success"
+		  });
+	</script>
+	{% endif %}
+
+{% endblock %}
+
+</html>

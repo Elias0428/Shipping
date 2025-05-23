@@ -1,0 +1,91 @@
+{% extends "dashboard/index.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+{% block head %}
+
+    <title>Edit Shipping</title>
+    
+    <!-- Agregar el estilo de Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header px-4 py-3">
+                        <h5 class="mb-0">Add New Shipping</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form class="row g-3 needs-validation" method="POST" Action="{% url 'editUser' users.id %}">
+                            <h4>User Information</h4>					
+                            <div class="col-md-4">
+                                <label for="frist_name" class="form-label">Frist Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{users.first_name}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name"  value="{{users.last_name}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="username" class="form-label">User Name</label>
+                                <input type="text" class="form-control" id="username" name="username"  value="{{users.username}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="role" class="form-label">Roll</label>
+                                <select id="inputState" class="form-select" id="role" name="role" >
+                                    <option value="A" {% if users.role == "A" %}selected{% endif %}> AGENTE </option>
+                                    <option value="S" {% if users.role == "S" %}selected{% endif %}> SUPERVISOR </option>
+                                    <option value="Admin" {% if users.role == "Admin" %}selected{% endif %}> ADMIN </option>
+                                </select>
+                            </div>   
+                            <div class="col-md-4">
+                                <label for="is_active" class="form-label">Status Active</label>
+                                <select id="inputState" class="form-select" id="is_active" name="is_active" >
+                                    <option value="1" {% if users.role == "1" %}selected{% endif %}> Active </option>
+                                    <option value="0" {% if users.role == "0" %}selected{% endif %}> Desactive </option>
+                                </select>
+                            </div>          
+                            <div class="col-md-12">
+                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                    <button type="submit" class="btn btn-primary px-4"  >Submit</button>
+                                    <a href="{% url 'users' %}" class="btn btn-light px-4">Back</a>
+                                </div>
+                            </div>
+                            {% csrf_token %}	
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>       
+ 
+
+{% endblock %}
+{% block end_js %}
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src={% static "assets/libs/popper.js/dist/umd/popper.min.js" %}></script>
+    <!-- apps -->
+    <script src={% static "assets/js/app-style-switcher.js" %}></script>
+    <script src={% static "assets/js/feather.min.js" %}></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src={% static "assets/extra-libs/sparkline/sparkline.js" %}></script>
+
+	<!-- Agregar la librería de Flatpickr -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="{% static "assets/js/validations/addProduct.js" %}"></script>
+
+  
+
+{% endblock %}
+
+</html>

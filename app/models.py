@@ -19,10 +19,6 @@ class Users(AbstractUser):
     ROLES_CHOICES = (
         ('A', 'Agent'),
         ('S', 'Supervisor'),
-        ('C', 'Customer'),
-        ('SUPP', 'Supplementary'),
-        ('AU', 'Auditor'),
-        ('TV', 'Tv'),
         ('Admin', 'Admin'),
     )
     role = models.CharField(max_length=20, choices=ROLES_CHOICES)
