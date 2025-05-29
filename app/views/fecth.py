@@ -1,13 +1,12 @@
 # Standard Python libraries
 import json
-import re
+import requests
 
 # Django utilities
 from django.http import JsonResponse
 
 # Django core libraries
 from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
 
 # Application-specific imports
 from app.models import *
@@ -34,29 +33,28 @@ def countDigits(numero):
 
 @csrf_exempt
 def validatePhone(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        phoneNumber = data.get('phone_number')
+  if request.method == 'POST':
+    data = json.loads(request.body)
+    phoneNumber = data.get('phone_number')
 
-        amount = countDigits(phoneNumber)
+    amount = countDigits(phoneNumber)
 
-        if amount == 10:
-            newNumber = int(f'1{phoneNumber}')
-        else:
-            newNumber = phoneNumber
+    if amount == 10:
+      newNumber = int(f'1{phoneNumber}')
+    else:
+      newNumber = phoneNumber
 
-        exists = Clients.objects.filter(phone_number=newNumber).exists()
+    exists = Clients.objects.filter(phone_number=newNumber).exists()
 
-        return JsonResponse({'exists': exists})
-    return JsonResponse({'error': 'Invalid request'}, status=400)
-
-import requests
+    return JsonResponse({'exists': exists})
+  
+  return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def proxyZipcode(request, zipcode):
-    try:
-        response = requests.get(f"https://ziptasticapi.com/{zipcode}")
-        response.raise_for_status()
-        return JsonResponse(response.json())
-    except requests.RequestException as e:
-        return JsonResponse({'error': 'No se pudo obtener info'}, status=500)
+  try:
+    response = requests.get(f"https://ziptasticapi.com/{zipcode}")
+    response.raise_for_status()
+    return JsonResponse(response.json())
+  except requests.RequestException as e:
+    return JsonResponse({'error': 'No se pudo obtener info'}, status=500)
 
